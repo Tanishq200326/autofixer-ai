@@ -11,7 +11,7 @@ def autofixer():
     data = request.get_json()
     zap_name = data.get('zap_name', '')
     error_msg = data.get('error_message', '').lower()
-    print(error_msg)
+    print("Error" + error_msg)
 
     if "401" in error_msg:
         suggestion = "Check your API credentials. The token may be missing or expired."
