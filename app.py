@@ -1,20 +1,21 @@
 from flask import Flask, request, jsonify
-from openai import OpenAI
+import google.generativeai as genai
 import os
 from dotenv import load_dotenv
 
 app = Flask(__name__)
 
-# Load environment variables from .env
+# Load environment variables
 load_dotenv()
-api_key = os.getenv("OPENAI_API_KEY")
+api_key = os.getenv("GEMINI_API_KEY")
 
-# Create OpenAI client instance
-client = OpenAI(api_key=api_key)
+# Configure Gemini API
+genai.configure(api_key=api_key)
+model = genai.GenerativeModel("gemini-pro")
 
 @app.route('/')
 def index():
-    return 'AutoFixer AI backend is running with GPT!'
+    return 'AutoFixer AI backend is running with Gemini!'
 
 @app.route('/autofixer', methods=['POST'])
 def autofixer():
@@ -25,7 +26,6 @@ def autofixer():
     if not error_msg:
         return jsonify({"suggestion": "No error message provided."})
 
-    # Construct prompt
     prompt = f"""You are an expert DevOps assistant. Analyze the following error message and provide a short, actionable suggestion to fix it:
 
 Error: {error_msg}
@@ -33,22 +33,12 @@ Error: {error_msg}
 Response:"""
 
     try:
-        # New style chat completion
-        response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "You are a helpful AI assistant for debugging software issues."},
-                {"role": "user", "content": prompt}
-            ],
-            max_tokens=100,
-            temperature=0.4
-        )
-
-        suggestion = response.choices[0].message.content.strip()
+        response = model.generate_content(prompt)
+        suggestion = response.text.strip()
         return jsonify({"suggestion": suggestion})
 
     except Exception as e:
-        print("Error from OpenAI:", e)
+        print("Error from Gemini:", e)
         return jsonify({"suggestion": "Failed to generate suggestion. Please try again later."})
 
 if __name__ == "__main__":

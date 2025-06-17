@@ -1,4 +1,4 @@
-flask
-gunicorn
-openai>=1.0.0
+flask>=2.3
+gunicorn>=21.2
 python-dotenv==1.0.1
+google-generativeai>=0.4.1
