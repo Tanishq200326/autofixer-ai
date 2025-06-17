@@ -2,6 +2,10 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
+@app.route('/')
+def index():
+    return 'AutoFixer AI backend is running!'
+
 @app.route('/autofixer', methods=['POST'])
 def autofixer():
     data = request.get_json()
