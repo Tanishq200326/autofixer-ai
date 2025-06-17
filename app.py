@@ -24,6 +24,7 @@ def autofixer():
         suggestion = "This error needs manual review or more logs.."
 
 
+    print("Returned suggestion:", suggestion)  # debug log
     return jsonify({"suggestion": suggestion})
 
 if __name__ == "__main__":
