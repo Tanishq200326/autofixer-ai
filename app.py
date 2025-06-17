@@ -10,22 +10,21 @@ def index():
 def autofixer():
     data = request.get_json()
     zap_name = data.get('zap_name', '')
-    error_msg = data.get('error_msg', '')
+    error_msg = data.get('error_message', '').lower()
 
-
-    # Dummy AI logic – You can enhance this!
-    if "401" in error_msg or "unauthorized" in error_msg.lower():
+    if "401" in error_msg:
         suggestion = "Check your API credentials. The token may be missing or expired."
-    elif "404" in error_msg or "not found" in error_msg.lower():
+    elif "404" in error_msg:
         suggestion = "Verify the endpoint URL. It may be incorrect or unavailable."
-    elif "parse" in error_msg.lower():
-        suggestion = "Check network connection or server load. Try increasing timeout settings."
+    elif "timeout" in error_msg or "timed out" in error_msg:
+        suggestion = "Request timed out. Check server health or network latency."
+    elif "parse" in error_msg:
+        suggestion = "Looks like a data parsing error. Ensure values are correctly formatted."
     else:
-        suggestion = "This error needs manual review or more logs.."
+        suggestion = "This error needs manual review or more logs."
 
-
-    print("Returned suggestion:", suggestion)  # debug log
     return jsonify({"suggestion": suggestion})
+
 
 if __name__ == "__main__":
     app.run(debug=True)
