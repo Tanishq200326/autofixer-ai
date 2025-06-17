@@ -1,13 +1,16 @@
 from flask import Flask, request, jsonify
-import openai
+from openai import OpenAI
 import os
 from dotenv import load_dotenv
 
 app = Flask(__name__)
 
-# Replace this with your actual API key
-load_dotenv()  # Load from .env
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# Load environment variables from .env
+load_dotenv()
+api_key = os.getenv("OPENAI_API_KEY")
+
+# Create OpenAI client instance
+client = OpenAI(api_key=api_key)
 
 @app.route('/')
 def index():
@@ -22,16 +25,17 @@ def autofixer():
     if not error_msg:
         return jsonify({"suggestion": "No error message provided."})
 
-    # Construct the prompt
+    # Construct prompt
     prompt = f"""You are an expert DevOps assistant. Analyze the following error message and provide a short, actionable suggestion to fix it:
-    
-    Error: {error_msg}
 
-    Response:"""
+Error: {error_msg}
+
+Response:"""
 
     try:
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",  # or "gpt-4" if available
+        # New style chat completion
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": "You are a helpful AI assistant for debugging software issues."},
                 {"role": "user", "content": prompt}
