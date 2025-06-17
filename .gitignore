@@ -1,0 +1,48 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environment
+env/
+venv/
+.venv/
+
+# Flask-related
+instance/
+*.db
+*.sqlite3
+
+# Environment variables
+.env
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Python egg files
+*.egg
+*.egg-info/
+
+# PyInstaller
+*.spec
+dist/
+build/
+
+# Logs
+*.log
+
+# Render build output
+build/
+staticfiles/
+
+# Jupyter Notebooks (optional)
+.ipynb_checkpoints/
+
+# Node modules (if using frontend JS separately)
+node_modules/
