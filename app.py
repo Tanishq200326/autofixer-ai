@@ -18,7 +18,7 @@ def autofixer():
         suggestion = "Check your API credentials. The token may be missing or expired."
     elif "404" in error_msg or "not found" in error_msg.lower():
         suggestion = "Verify the endpoint URL. It may be incorrect or unavailable."
-    elif "timeout" in error_msg.lower():
+    elif "parse" in error_msg.lower():
         suggestion = "Check network connection or server load. Try increasing timeout settings."
     else:
         suggestion = "This error needs manual review or more logs.."
